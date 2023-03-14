@@ -1,0 +1,96 @@
+
+
+
+
+<style>
+
+.list, button div {
+  border: 1px solid;
+  text-align: left;
+}
+.groceriesList {
+  text-align: left;
+}
+
+
+</style>
+<template>  
+<div class="groceriesList">
+      <tr >Name Product: <input @keyup.enter="addProductToList" type="text" v-model="newGroceries.name"></tr>
+      <tr> Set Price: <input @keyup.enter="addProductToList" type="number" v-model="newGroceries.price"></tr>
+      <tr>Set Quantity: <input @keyup.enter="addProductToList" type="number" v-model="newGroceries.quantity"></tr>
+      <tr><input @keyup.enter="addProductToList" type="boolean" :value="newGroceries.editing = false" hidden></tr>   
+</div>
+<button @click=addProductToList>add</button>  
+
+<div v-show="this.groceries.editing"> 
+ <tr>Edit products:
+ </tr>
+  <tr >Name Product: <input @keyup.enter="changeProduct" type="text" v-model="changeGroceries.name"></tr>
+      <tr> Set Price: <input @keyup.enter="changeProduct" type="number" v-model="changeGroceries.price"></tr>
+      <tr>Set Quantity: <input @keyup.enter="changeProduct" type="number" v-model="changeGroceries.quantity"></tr>
+      <button @click=changeProduct>change</button> 
+</div>  
+ 
+  <ul>
+       
+    <li v-for="groc in groceries" v-show="groc.name">Product: {{groc}}  <button @click=removeProduct>remove</button><button @click=editProduct>edit</button></li>
+     
+    _______________________________________________________________________________________________________________________
+    <td>>>Total Cost: {{totalCost}} Euro</td>
+  </ul> 
+</template>
+
+
+<script>
+
+ export default {
+    data() {
+        return { 
+      
+            groceries: [],
+                           
+            newGroceries: { 
+            },  
+            changeGroceries: { 
+            },    
+        }
+    },
+
+        computed: {
+          totalCost() {
+            return this.groceries.reduce((totalPrice, item) => totalPrice += item.price * item.quantity, 0);
+          }
+         
+          
+    },
+        methods: {         
+              addProductToList() {        
+                // this.grocery.push(this.newGrocery);
+              this.groceries.push(JSON.parse(JSON.stringify(this.newGroceries)));
+           
+               
+              
+              },
+              removeProduct: function(groc){
+              this.groceries.splice(this.groceries.indexOf(groc), 1);
+              console.log(groc);
+              },
+              editProduct: function(){
+                this.groceries.editing = true;
+        
+              },
+              changeProduct: function() {
+                 this.groceries.slice(0,0,JSON.parse(JSON.stringify(this.changeGroceries)));
+              
+                  this.groceries.editing = false;
+              }
+
+              
+              
+
+  }
+  
+};
+            
+</script>
